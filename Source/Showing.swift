@@ -9,7 +9,7 @@ public func hide(whisperFrom from: UINavigationController, after: NSTimeInterval
 }
 
 public func show(shout announcement: Announcement, to: UIViewController, completion: (() -> Void)? = nil) {
-  shoutView.craft(announcement, to: to, completion: completion)
+  shout.craft(announcement, to: to, completion: completion)
 }
 
 public func show(whistle murmur: Murmur, action: WhistleAction = .Present) {
