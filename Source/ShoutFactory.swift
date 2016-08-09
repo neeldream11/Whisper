@@ -10,7 +10,7 @@ public class ShoutView: UIView {
     
     public struct Dimensions {
         public static let indicatorHeight: CGFloat = 6
-        public static let indicatorWidth: CGFloat = 50
+        public static let indicatorWidth: CGFloat = 18
         public static let imageSize: CGFloat = 48
         public static let imageOffset: CGFloat = 18
         public static var height: CGFloat = UIApplication.sharedApplication().statusBarHidden ? 70 : 80
