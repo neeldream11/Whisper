@@ -145,12 +145,12 @@ open class ShoutView: UIView {
     let width = UIScreen.main.bounds.width
     controller.view.addSubview(self)
 
-    frame = CGRect(x: 0, y: 0, width: width, height: 0)
-    backgroundView.frame = CGRect(x: 0, y: 0, width: width, height: 0)
+    frame = CGRect(x: 0, y: -Dimensions.height, width: width, height: Dimensions.height)
+    backgroundView.frame = CGRect(x: 0, y: 0, width: width, height: Dimensions.height)
 
     UIView.animate(withDuration: 0.35, animations: {
-      self.frame.size.height = Dimensions.height
-      self.backgroundView.frame.size.height = self.frame.height
+      self.frame.origin.y = 0
+//      self.backgroundView.frame.size.height = self.frame.height
     })
   }
 
@@ -189,8 +189,8 @@ open class ShoutView: UIView {
 
   open func silent() {
     UIView.animate(withDuration: 0.35, animations: {
-      self.frame.size.height = 0
-      self.backgroundView.frame.size.height = self.frame.height
+      self.frame.origin.y = -self.frame.size.height
+//      self.backgroundView.frame.size.height = self.frame.height
       }, completion: { finished in
         self.completion?()
         self.displayTimer.invalidate()
