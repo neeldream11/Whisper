@@ -9,7 +9,7 @@ open class ShoutView: UIView {
     public static let indicatorWidth: CGFloat = 50
     public static let imageSize: CGFloat = 48
     public static let imageOffset: CGFloat = 18
-    public static var height: CGFloat = UIApplication.shared.isStatusBarHidden ? 70 : 80
+    public static var height: CGFloat = UIApplication.shared.isStatusBarHidden ? 100 : 100
     public static var textOffset: CGFloat = 75
   }
 
@@ -118,7 +118,7 @@ open class ShoutView: UIView {
   // MARK: - Configuration
 
   open func craft(_ announcement: Announcement, to: UIViewController, completion: (() -> ())?) {
-    Dimensions.height = UIApplication.shared.isStatusBarHidden ? 70 : 80
+    Dimensions.height = UIApplication.shared.isStatusBarHidden ? 100 : 100
 
     panGestureActive = false
     shouldSilent = false
