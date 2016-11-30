@@ -134,17 +134,19 @@ open class ShoutView: UIView {
     titleLabel.text = announcement.title
     subtitleLabel.text = announcement.subtitle
     
+    let bgColor: UIColor
     switch announcement.status! {
     case .success:
-        backgroundColor = ColorList.Shout.successBackground
+        bgColor = ColorList.Shout.successBackground
     case .error:
-        backgroundColor = ColorList.Shout.errorBackground
+        bgColor = ColorList.Shout.errorBackground
     case .warning:
-        backgroundColor = ColorList.Shout.warningBackground
+        bgColor = ColorList.Shout.warningBackground
     case .info:
-        backgroundColor = ColorList.Shout.infoBackground
+        bgColor = ColorList.Shout.infoBackground
     }
     
+    backgroundView.backgroundColor = bgColor
     displayTimer.invalidate()
     displayTimer = Timer.scheduledTimer(timeInterval: announcement.duration,
       target: self, selector: #selector(ShoutView.displayTimerDidFire), userInfo: nil, repeats: false)
