@@ -1,6 +1,6 @@
 import UIKit
 
-public enum WhisperStatus {
+public enum WhisperStatus: Int {
     case success
     case warning
     case error
