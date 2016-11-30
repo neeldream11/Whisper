@@ -15,7 +15,7 @@ open class ShoutView: UIView {
 
   open fileprivate(set) lazy var backgroundView: UIView = {
     let view = UIView()
-    view.backgroundColor = ColorList.Shout.background
+    view.backgroundColor = ColorList.Shout.errorBackground
     view.alpha = 0.98
     view.clipsToBounds = true
 
@@ -119,7 +119,7 @@ open class ShoutView: UIView {
 
   open func craft(_ announcement: Announcement, to: UIViewController, completion: (() -> ())?) {
     Dimensions.height = UIApplication.shared.isStatusBarHidden ? 100 : 100
-
+    
     panGestureActive = false
     shouldSilent = false
     configureView(announcement)
@@ -133,7 +133,18 @@ open class ShoutView: UIView {
     imageView.image = announcement.image
     titleLabel.text = announcement.title
     subtitleLabel.text = announcement.subtitle
-
+    
+    switch announcement.status! {
+    case .success:
+        backgroundColor = ColorList.Shout.successBackground
+    case .error:
+        backgroundColor = ColorList.Shout.errorBackground
+    case .warning:
+        backgroundColor = ColorList.Shout.warningBackground
+    case .info:
+        backgroundColor = ColorList.Shout.infoBackground
+    }
+    
     displayTimer.invalidate()
     displayTimer = Timer.scheduledTimer(timeInterval: announcement.duration,
       target: self, selector: #selector(ShoutView.displayTimerDidFire), userInfo: nil, repeats: false)
