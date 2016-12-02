@@ -44,7 +44,7 @@ open class ShoutView: UIView {
         let label = UILabel()
         label.font = FontList.Shout.title
         label.textColor = ColorList.Shout.title
-        label.numberOfLines = 2
+        label.numberOfLines = 0
         
         return label
     }()
@@ -53,7 +53,7 @@ open class ShoutView: UIView {
         let label = UILabel()
         label.font = FontList.Shout.subtitle
         label.textColor = ColorList.Shout.subtitle
-        label.numberOfLines = 2
+        label.numberOfLines = 0
         
         return label
     }()
@@ -155,6 +155,8 @@ open class ShoutView: UIView {
         controller.view.addSubview(self)
         
         frame.size.height = 0
+        
+        UIApplication.shared.setStatusBarHidden(true, with: .fade)
         UIView.animate(withDuration: 0.35, animations: {
             self.frame.size.height = self.internalHeight + Dimensions.touchOffset
         })
@@ -210,6 +212,7 @@ open class ShoutView: UIView {
     // MARK: - Actions
     
     open func silent() {
+        UIApplication.shared.setStatusBarHidden(false, with: .fade)
         UIView.animate(withDuration: 0.35, animations: {
             self.frame.size.height = 0
         }, completion: { finished in
@@ -258,9 +261,12 @@ open class ShoutView: UIView {
             panGestureActive = false
             let height = translation.y < -5 || shouldSilent ? 0 : internalHeight
             
-            subtitleLabel.numberOfLines = 2
+            subtitleLabel.numberOfLines = 0
             subtitleLabel.sizeToFit()
             
+            if height == 0 {
+                UIApplication.shared.setStatusBarHidden(false, with: .fade)
+            }
             UIView.animate(withDuration: 0.2, animations: {
                 self.frame.size.height = height + Dimensions.touchOffset
             }, completion: { _ in
