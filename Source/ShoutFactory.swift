@@ -191,7 +191,12 @@ open class ShoutView: UIView {
             titleLabel.center.y = imageView.center.y - 2.5
         }
         
-        frame = CGRect(x: 0, y: 0, width: totalWidth, height: internalHeight + Dimensions.touchOffset)
+        var height = internalHeight + Dimensions.touchOffset
+        if height < 70 {
+            height = 70
+        }
+  
+        frame = CGRect(x: 0, y: 0, width: totalWidth, height: height)
     }
     
     // MARK: - Frame
