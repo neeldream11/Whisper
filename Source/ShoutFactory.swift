@@ -157,9 +157,10 @@ open class ShoutView: UIView {
         frame.size.height = 0
         
         //        UIApplication.shared.setStatusBarHidden(true, with: .fade)
-        UIApplication.shared.windows.first?.windowLevel = UIWindowLevelStatusBar
+        
         UIView.animate(withDuration: 0.35, animations: {
             self.frame.size.height = self.internalHeight + Dimensions.touchOffset
+            UIApplication.shared.windows.first?.windowLevel = UIWindowLevelStatusBar
         })
     }
     
@@ -219,9 +220,10 @@ open class ShoutView: UIView {
     
     open func silent() {
         //        UIApplication.shared.setStatusBarHidden(false, with: .fade)
-        UIApplication.shared.windows.first?.windowLevel = UIWindowLevelNormal
+        
         UIView.animate(withDuration: 0.35, animations: {
             self.frame.size.height = 0
+            UIApplication.shared.windows.first?.windowLevel = UIWindowLevelNormal
         }, completion: { finished in
             self.completion?()
             self.displayTimer.invalidate()
@@ -273,10 +275,11 @@ open class ShoutView: UIView {
             
             if height == 0 {
                 //                UIApplication.shared.setStatusBarHidden(false, with: .fade)
-                UIApplication.shared.windows.first?.windowLevel = UIWindowLevelNormal
+                
             }
             UIView.animate(withDuration: 0.2, animations: {
                 self.frame.size.height = height + Dimensions.touchOffset
+                UIApplication.shared.windows.first?.windowLevel = UIWindowLevelNormal
             }, completion: { _ in
                 if translation.y < -5 {
                     self.completion?()
