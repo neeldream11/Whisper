@@ -2,6 +2,17 @@ import UIKit
 
 let shoutView = ShoutView()
 
+class ShoutWindow: UIWindow {
+    internal override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        let hitView = super.hitTest(point, with: event)
+        if hitView == self {
+            return nil
+        } else {
+            return hitView
+        }
+    }
+}
+
 open class ShoutView: UIView {
     
     public struct Dimensions {
@@ -77,7 +88,12 @@ open class ShoutView: UIView {
     open fileprivate(set) var panGestureActive = false
     open fileprivate(set) var shouldSilent = false
     open fileprivate(set) var completion: (() -> ())?
-    
+    private lazy var shoutWindow: ShoutWindow = {
+        let window = ShoutWindow(frame: UIScreen.main.bounds)
+        window.windowLevel = UIWindowLevelStatusBar
+        window.rootViewController = UIViewController()
+        return window
+    }()
     private var subtitleLabelOriginalHeight: CGFloat = 0
     private var internalHeight: CGFloat = 0
     
@@ -152,15 +168,15 @@ open class ShoutView: UIView {
     }
     
     open func shout(to controller: UIViewController) {
-        controller.view.addSubview(self)
-        
+        //        UIApplication.shared.keyWindow?.addSubview(sel
+        shoutWindow.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: self.internalHeight + Dimensions.touchOffset)
+        shoutWindow.rootViewController?.view.addSubview(self)
+        shoutWindow.makeKeyAndVisible()
+        self.shoutWindow.rootViewController?.view.isUserInteractionEnabled = true
+        self.shoutWindow.isUserInteractionEnabled = true
         frame.size.height = 0
-        
-        //        UIApplication.shared.setStatusBarHidden(true, with: .fade)
-        
         UIView.animate(withDuration: 0.35, animations: {
             self.frame.size.height = self.internalHeight + Dimensions.touchOffset
-            UIApplication.shared.windows.first?.windowLevel = UIWindowLevelStatusBar
         })
     }
     
@@ -218,15 +234,15 @@ open class ShoutView: UIView {
     // MARK: - Actions
     
     open func silent() {
-        //        UIApplication.shared.setStatusBarHidden(false, with: .fade)
-        
         UIView.animate(withDuration: 0.35, animations: {
             self.frame.size.height = 0
-            UIApplication.shared.windows.first?.windowLevel = UIWindowLevelNormal
         }, completion: { finished in
             self.completion?()
             self.displayTimer.invalidate()
             self.removeFromSuperview()
+            self.shoutWindow.removeFromSuperview()
+            self.shoutWindow.rootViewController?.view.isUserInteractionEnabled = false
+            self.shoutWindow.isUserInteractionEnabled = false
         })
     }
     
@@ -272,17 +288,15 @@ open class ShoutView: UIView {
             subtitleLabel.numberOfLines = 0
             subtitleLabel.sizeToFit()
             
-            if height == 0 {
-                //                UIApplication.shared.setStatusBarHidden(false, with: .fade)
-                
-            }
             UIView.animate(withDuration: 0.2, animations: {
                 self.frame.size.height = height + Dimensions.touchOffset
-                UIApplication.shared.windows.first?.windowLevel = UIWindowLevelNormal
             }, completion: { _ in
                 if translation.y < -5 {
                     self.completion?()
                     self.removeFromSuperview()
+                    self.shoutWindow.removeFromSuperview()
+                    self.shoutWindow.rootViewController?.view.isUserInteractionEnabled = false
+                    self.shoutWindow.isUserInteractionEnabled = false
                 }
             })
         }
