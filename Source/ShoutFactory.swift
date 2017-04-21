@@ -175,9 +175,13 @@ open class ShoutView: UIView {
         self.shoutWindow.rootViewController?.view.isUserInteractionEnabled = true
         self.shoutWindow.isUserInteractionEnabled = true
         frame.size.height = 0
+        
         UIView.animate(withDuration: 0.35, animations: {
             self.frame.size.height = self.internalHeight + Dimensions.touchOffset
-        })
+        }) { (success) in
+            self.shoutWindow.resignKey()
+            self.mainWindow()?.makeKey()
+        }
     }
     
     // MARK: - Setup
@@ -240,10 +244,23 @@ open class ShoutView: UIView {
             self.completion?()
             self.displayTimer.invalidate()
             self.removeFromSuperview()
+            
             self.shoutWindow.removeFromSuperview()
             self.shoutWindow.rootViewController?.view.isUserInteractionEnabled = false
             self.shoutWindow.isUserInteractionEnabled = false
         })
+    }
+    
+    func mainWindow() -> UIWindow? {
+        for window in UIApplication.shared.windows.reversed() {
+            if window.windowLevel == UIWindowLevelNormal {
+                return window
+            } else {
+                
+            }
+        }
+        
+        return nil
     }
     
     // MARK: - Timer methods
