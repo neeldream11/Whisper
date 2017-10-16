@@ -224,14 +224,23 @@ open class ShoutView: UIView {
     
     open override var frame: CGRect {
         didSet {
-            backgroundView.frame = CGRect(x: 0, y: 0,
-                                          width: frame.size.width,
+            let horizontalPadding: CGFloat = 10
+            var topPadding: CGFloat = 15
+            
+            if #available(iOS 11.0, *) {
+                topPadding = topPadding + self.mainWindow()!.safeAreaInsets.top
+            }
+            
+            
+            backgroundView.frame = CGRect(x: horizontalPadding, y: topPadding,
+                                          width: frame.size.width - 2 * horizontalPadding,
                                           height: frame.size.height - Dimensions.touchOffset)
             
             indicatorView.frame = CGRect(x: (backgroundView.frame.size.width - Dimensions.indicatorWidth) / 2,
                                          y: backgroundView.frame.height - Dimensions.indicatorHeight - 5,
                                          width: Dimensions.indicatorWidth,
                                          height: Dimensions.indicatorHeight)
+            backgroundView.layer.cornerRadius = horizontalPadding
         }
     }
     
