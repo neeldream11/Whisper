@@ -195,7 +195,7 @@ open class ShoutView: UIView {
         let imageSize: CGFloat = imageView.image != nil ? Dimensions.imageSize : 0
         
         [titleLabel, subtitleLabel].forEach {
-            $0.frame.size.width = totalWidth - imageSize - (Dimensions.imageOffset * 2)
+            $0.frame.size.width = totalWidth - imageSize - (Dimensions.imageOffset * 3)
             $0.sizeToFit()
         }
         
