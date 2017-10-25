@@ -16,8 +16,6 @@ class ShoutWindow: UIWindow {
 open class ShoutView: UIView {
     
     public struct Dimensions {
-        public static let indicatorHeight: CGFloat = 6
-        public static let indicatorWidth: CGFloat = 50
         public static let imageSize: CGFloat = 48
         public static let imageOffset: CGFloat = 18
         public static var textOffset: CGFloat = 75
@@ -32,15 +30,7 @@ open class ShoutView: UIView {
         
         return view
     }()
-    
-    open fileprivate(set) lazy var indicatorView: UIView = {
-        let view = UIView()
-        view.backgroundColor = ColorList.Shout.dragIndicator
-        view.layer.cornerRadius = Dimensions.indicatorHeight / 2
-        view.isUserInteractionEnabled = true
-        
-        return view
-    }()
+
     
     open fileprivate(set) lazy var imageView: UIImageView = {
         let imageView = UIImageView()
@@ -103,9 +93,9 @@ open class ShoutView: UIView {
         super.init(frame: frame)
         
         addSubview(backgroundView)
-        [imageView, titleLabel, subtitleLabel, indicatorView].forEach {
-            $0.autoresizingMask = []
-            backgroundView.addSubview($0)
+        [imageView, titleLabel, subtitleLabel].forEach {
+            ($0 as! UIView).autoresizingMask = []
+            backgroundView.addSubview($0 as! UIView)
         }
         
         clipsToBounds = false
@@ -169,19 +159,21 @@ open class ShoutView: UIView {
     
     open func shout(to controller: UIViewController) {
         //        UIApplication.shared.keyWindow?.addSubview(sel
-        shoutWindow.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: self.internalHeight + Dimensions.touchOffset)
+        let height = self.internalHeight + Dimensions.touchOffset
+        shoutWindow.frame = CGRect(x: 0, y: -height, width: UIScreen.main.bounds.size.width, height: height)
         shoutWindow.rootViewController?.view.addSubview(self)
         shoutWindow.makeKeyAndVisible()
         self.shoutWindow.rootViewController?.view.isUserInteractionEnabled = true
         self.shoutWindow.isUserInteractionEnabled = true
-        frame.size.height = 0
         
-        UIView.animate(withDuration: 0.35, animations: {
-            self.frame.size.height = self.internalHeight + Dimensions.touchOffset
-        }) { (success) in
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.0, options: .curveEaseOut, animations: {
+            self.shoutWindow.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: height)
+        }) { _ in
             self.shoutWindow.resignKey()
             self.mainWindow()?.makeKey()
+            
         }
+        
     }
     
     // MARK: - Setup
@@ -236,10 +228,6 @@ open class ShoutView: UIView {
                                           width: frame.size.width - 2 * horizontalPadding,
                                           height: frame.size.height - Dimensions.touchOffset)
             
-            indicatorView.frame = CGRect(x: (backgroundView.frame.size.width - Dimensions.indicatorWidth) / 2,
-                                         y: backgroundView.frame.height - Dimensions.indicatorHeight - 5,
-                                         width: Dimensions.indicatorWidth,
-                                         height: Dimensions.indicatorHeight)
             backgroundView.layer.cornerRadius = horizontalPadding
         }
     }
