@@ -80,7 +80,7 @@ open class ShoutView: UIView {
     open fileprivate(set) var completion: (() -> ())?
     private lazy var shoutWindow: ShoutWindow = {
         let window = ShoutWindow(frame: UIScreen.main.bounds)
-        window.windowLevel = UIWindowLevelStatusBar
+        window.windowLevel = UIWindow.Level.statusBar
         window.rootViewController = UIViewController()
         return window
     }()
@@ -94,8 +94,8 @@ open class ShoutView: UIView {
         
         addSubview(backgroundView)
         [imageView, titleLabel, subtitleLabel].forEach {
-            ($0 as! UIView).autoresizingMask = []
-            backgroundView.addSubview($0 as! UIView)
+            ($0 ).autoresizingMask = []
+            backgroundView.addSubview($0 )
         }
         
         clipsToBounds = false
@@ -108,7 +108,7 @@ open class ShoutView: UIView {
         backgroundView.addGestureRecognizer(tapGestureRecognizer)
         addGestureRecognizer(panGestureRecognizer)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(ShoutView.orientationDidChange), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ShoutView.orientationDidChange), name: UIDevice.orientationDidChangeNotification, object: nil)
     }
     
     public required init?(coder aDecoder: NSCoder) {
@@ -116,7 +116,7 @@ open class ShoutView: UIView {
     }
     
     deinit {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIDevice.orientationDidChangeNotification, object: nil)
     }
     
     // MARK: - Configuration
@@ -250,7 +250,7 @@ open class ShoutView: UIView {
     
     func mainWindow() -> UIWindow? {
         for window in UIApplication.shared.windows.reversed() {
-            if window.windowLevel == UIWindowLevelNormal {
+            if window.windowLevel == UIWindow.Level.normal {
                 return window
             } else {
                 
